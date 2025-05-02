@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": " {                                                                           \n        \"username\": \"user21\",                                                      \n        \"password\": \"password123\"                                                 \n      }            ",
+					"raw": "{\n        \"username\": \"user1\",\n        \"password\": \"password123\" ,\n        \"name\" : \"xxx\", \n        \"address\" : \"xxx\", \n        \"phone\" : \"08xxx\" \n      }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -78,41 +78,11 @@
 			"name": "menus",
 			"request": {
 				"auth": {
-					"type": "jwt",
-					"jwt": [
+					"type": "bearer",
+					"bearer": [
 						{
-							"key": "algorithm",
-							"value": "HS256",
-							"type": "string"
-						},
-						{
-							"key": "isSecretBase64Encoded",
-							"value": false,
-							"type": "boolean"
-						},
-						{
-							"key": "payload",
-							"value": "{}",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "queryParamKey",
-							"value": "token",
-							"type": "string"
-						},
-						{
-							"key": "header",
-							"value": "{}",
+							"key": "token",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -129,13 +99,13 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:5000/menu",
+					"raw": "localhost:5000/menus",
 					"host": [
 						"localhost"
 					],
 					"port": "5000",
 					"path": [
-						"menu"
+						"menus"
 					]
 				}
 			},
@@ -143,18 +113,39 @@
 		},
 		{
 			"name": "get-menus",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "localhost:5000/menu/id",
+					"raw": "localhost:5000/menus",
 					"host": [
 						"localhost"
 					],
 					"port": "5000",
 					"path": [
-						"menu",
-						"id"
+						"menus"
 					]
 				}
 			},
@@ -191,8 +182,28 @@
 		{
 			"name": "get-customers",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/customers",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"customers"
+					]
+				}
 			},
 			"response": []
 		},
@@ -211,6 +222,15 @@
 				},
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{                                                                           \n        \"number\": 1,                                                              \n        \"status\": \"available\"                                                     \n      }            ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "localhost:5000/tables",
 					"host": [
@@ -227,13 +247,36 @@
 		{
 			"name": "edit-tables",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{                                                                           \n        \"status\": \"occupied\"                                                      \n      }     ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "/tables/id",
+					"raw": "localhost:5000/tables/4",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
 					"path": [
 						"tables",
-						"id"
+						"4"
 					]
 				}
 			},
@@ -242,8 +285,27 @@
 		{
 			"name": "transaction",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{                                                                           \n        \"customerId\": 1,                                                          \n        \"items\": [1, 2],                                                          \n        \"isDineIn\": true,                                                         \n        \"tableNumber\": 1                                                          \n      }          ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "localhost:5000/transaction",
 					"host": [
