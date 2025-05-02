@@ -63,9 +63,9 @@ function RegisterPage() {
 				<div className="w-full h-screen flex justify-center items-center">
 					<Card className="flex w-fit h-fit ">
 						<CardHeader className="flex flex-col">
-							<p className="text-2xl font-bold">Register</p>
+							<p className="text-2xl font-bold pt-2">Register</p>
 							<p className="text-gray-500 text-sm mt-1">
-								Bergabung dengan membuat akun WMB baru anda!
+								Bergabung dengan registrasi akun WMB anda!
 							</p>
 						</CardHeader>
 						<Divider />
