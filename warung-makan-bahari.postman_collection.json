@@ -1,0 +1,261 @@
+{
+	"info": {
+		"_postman_id": "8a5cccb4-53c1-4a04-b876-5a9623d3e210",
+		"name": "warung-makan-bahari",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42757918"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {                                                                           \n        \"username\": \"user21\",                                                      \n        \"password\": \"password123\"                                                 \n      }            ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/register",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"token\", jsonData.token);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{                                                                           \n        \"username\": \"user1\",                                                      \n        \"password\": \"password123\"                                                 \n      }     ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/login",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "menus",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "algorithm",
+							"value": "HS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "payload",
+							"value": "{}",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{                                                                           \n        \"name\": \"Nasi Goreng\",                                                    \n        \"stock\": 20,                                                              \n        \"price\": 20000                                                            \n      }      ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/menu",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"menu"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-menus",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/menu/id",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"menu",
+						"id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "customers",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/customers",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-customers",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "tables",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/tables",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"tables"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit-tables",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "/tables/id",
+					"path": [
+						"tables",
+						"id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/transaction",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
