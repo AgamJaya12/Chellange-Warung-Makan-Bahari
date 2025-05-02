@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import RegisterPage from "./Pages/RegisterPage";
+import RegisterPage from "../Pages/RegisterPage";
 
 function WmbRoutes() {
 	return (

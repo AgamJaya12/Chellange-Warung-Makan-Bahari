@@ -1,4 +1,4 @@
-import WmbRoutes from "./Routes";
+import WmbRoutes from "./Routes/Routes";
 
 function App() {
 	return (
