@@ -49,7 +49,7 @@ export default function NavigationBar({ navigate }) {
 						onClick={() => navigate("/menu")}
 						className="hover:cursor-pointer"
 					>
-						Menu's
+						Menu
 					</Link>
 				</NavbarItem>
 				<NavbarItem isActive={path === "/table"}>
