@@ -13,8 +13,10 @@ import { Input } from "@heroui/input";
 import { Plus, Search } from "lucide-react";
 
 import { Button, Spinner } from "@heroui/react";
+import { useApiErrorHandler } from "../hooks/useApiHandler";
 
 function CustomerPage() {
+	useApiErrorHandler();
 	const [visibleCount, setVisibleCount] = useState(10);
 	const [localCustomer, setLocalCustomer] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -30,7 +32,7 @@ function CustomerPage() {
 	useEffect(() => {
 		localStorage.setItem(
 			"token",
-			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc0NjI1MzQ0MiwiZXhwIjoxNzQ2MjU3MDQyfQ.dQYnlw71H-d_ujpuUfnp6nyeber_-Q9DlPzdsrl9iok",
+			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc0NjI1NzQ3NywiZXhwIjoxNzQ2MjYxMDc3fQ.1CBrQjP_zQzdia1OwJlWwyrd0lsxpT36mGh86sh4hU8",
 		);
 		fetchCustomers();
 	}, []);
