@@ -17,7 +17,7 @@ import { AddCustomerPopUP } from "../components/AddPopUp";
 function CustomerPage() {
 	useApiErrorHandler();
 
-	const [visibleCount, setVisibleCount] = useState(10);
+	const [visibleCount, setVisibleCount] = useState(11);
 	const [localCustomer, setLocalCustomer] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [searchTerm, setSearchTerm] = useState("");
@@ -39,7 +39,7 @@ function CustomerPage() {
 		// Mock token storage
 		localStorage.setItem(
 			"token",
-			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc0NjI2MjYzNywiZXhwIjoxNzQ2MjY2MjM3fQ.sOodjXcW2f8JEgRT-KtId9QIdNt-ty_2Z3CEezQLPUI",
+			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc0NjI3OTg1OSwiZXhwIjoxNzQ2MjgzNDU5fQ.DBiOUT7plL-peVrOqDrb_Vke2FXnU_FanrEKg6CU2KU",
 		);
 		fetchCustomers();
 	}, []);
@@ -53,8 +53,8 @@ function CustomerPage() {
 
 	return (
 		<>
-			<div className="flex justify-center items-center min-h-screen">
-				<div className="flex justify-center flex-col gap-2 w-[80rem]">
+			<div className="flex justify-center items-center h-full">
+				<div className="flex justify-center flex-col gap-2 w-[84rem]">
 					{isLoading ? (
 						<div className="flex justify-center items-center min-h-screen">
 							<Spinner size="lg" label="Loading customers..." />
@@ -96,7 +96,7 @@ function CustomerPage() {
 								}
 								aria-label="customer table"
 								classNames={{
-									base: "max-h-[35rem] overflow-scroll",
+									base: "max-h-[37rem] overflow-scroll",
 									table: "min-h-[7rem]",
 								}}
 							>

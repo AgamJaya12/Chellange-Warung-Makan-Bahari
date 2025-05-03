@@ -5,7 +5,6 @@ import { AxiosInstance } from "../lib/axios";
 
 export function useApiErrorHandler() {
 	const navigate = useNavigate();
-
 	useEffect(() => {
 		const interceptor = AxiosInstance.interceptors.response.use(
 			(res) => res,
