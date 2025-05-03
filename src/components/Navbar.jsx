@@ -14,7 +14,7 @@ export default function NavigationBar({ navigate }) {
 	const location = useLocation();
 	const path = location.pathname;
 	const token = localStorage.getItem("token");
-	return (
+	return path !== "/login" && path !== "/register" ? (
 		<Navbar
 			maxWidth="full"
 			classNames={{
@@ -97,5 +97,5 @@ export default function NavigationBar({ navigate }) {
 				</NavbarItem>
 			</NavbarContent>
 		</Navbar>
-	);
+	) : null;
 }
