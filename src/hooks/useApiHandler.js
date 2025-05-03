@@ -1,13 +1,13 @@
 import { useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { addToast } from "@heroui/react";
+import { AxiosInstance } from "../lib/axios";
 
 export function useApiErrorHandler() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		const interceptor = axios.interceptors.response.use(
+		const interceptor = AxiosInstance.interceptors.response.use(
 			(res) => res,
 			(err) => {
 				const status = err.response?.status;
@@ -24,7 +24,7 @@ export function useApiErrorHandler() {
 		);
 
 		return () => {
-			axios.interceptors.response.eject(interceptor);
+			AxiosInstance.interceptors.response.eject(interceptor);
 		};
 	}, [navigate]);
 }

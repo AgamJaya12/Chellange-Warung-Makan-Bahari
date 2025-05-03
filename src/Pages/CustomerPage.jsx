@@ -14,6 +14,7 @@ import { Plus, Search } from "lucide-react";
 
 import { Button, Spinner } from "@heroui/react";
 import { useApiErrorHandler } from "../hooks/useApiHandler";
+import { AddCustomerPopUP } from "../components/AddPopUp";
 
 function CustomerPage() {
 	useApiErrorHandler();
@@ -55,9 +56,7 @@ function CustomerPage() {
 							value={searchTerm}
 							onChange={(e) => setSearchTerm(e.target.value)}
 						/>
-						<Button className="min-w-1">
-							<Plus className="w-4" />
-						</Button>
+						<AddCustomerPopUP />
 					</div>
 					<Table
 						isStriped
