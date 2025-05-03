@@ -28,12 +28,14 @@ const addCustomerSchema = z.object({
 		.regex(/^\d+$/, "Nomor telepon harus berupa angka"),
 });
 
-export function AddCustomerPopUP() {
+export function AddCustomerPopUP({ fetchCustomers }) {
 	useApiErrorHandler();
 	async function submitHandler(data) {
 		try {
 			const response = await AxiosInstance.post("/customers", data);
 			console.log(response);
+			fetchCustomers();
+			form.reset();
 		} catch (error) {
 			console.error(error);
 		}
