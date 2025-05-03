@@ -13,10 +13,16 @@ export function useApiErrorHandler() {
 				const status = err.response?.status;
 
 				if (status === 401) {
-					addToast("Unauthorized! redirect ke login... 🔐");
+					addToast({
+						title: "Sesi anda habis!",
+						description: "Silahkan login kembali.",
+					});
 					navigate("/login");
 				} else if (status >= 500) {
-					addToast("Server error! 🚨");
+					addToast({
+						title: "Server error!",
+						description: "Silahkan coba lagi nanti.",
+					});
 				}
 
 				return Promise.reject(err);

@@ -54,7 +54,7 @@ export function AddCustomerPopUP({ fetchCustomers }) {
 		<Popover showArrow offset={10} placement="bottom">
 			<PopoverTrigger>
 				<Button>
-					<Plus /> Tambah Customer
+					<Plus /> Tambah Pelanggan
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-[17rem] h-[15rem]">
