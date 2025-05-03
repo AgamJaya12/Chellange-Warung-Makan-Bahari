@@ -12,7 +12,7 @@ import { Input } from "@heroui/input";
 import { Plus, Search } from "lucide-react";
 import { Button, Spinner } from "@heroui/react";
 import { useApiErrorHandler } from "../hooks/useApiHandler";
-import { AddCustomerPopUP } from "../components/AddPopUp";
+import { AddCustomerPopUP } from "../components/PopUp";
 
 function CustomerPage() {
 	useApiErrorHandler();
@@ -39,7 +39,7 @@ function CustomerPage() {
 		// Mock token storage
 		localStorage.setItem(
 			"token",
-			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc0NjI3OTg1OSwiZXhwIjoxNzQ2MjgzNDU5fQ.DBiOUT7plL-peVrOqDrb_Vke2FXnU_FanrEKg6CU2KU",
+			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc0NjI4MzMyOSwiZXhwIjoxNzQ2Mjg2OTI5fQ.328_v2ydarpGhFZhI318wM46khMvvHbH8jPp1_tAy7k",
 		);
 		fetchCustomers();
 	}, []);
@@ -53,7 +53,7 @@ function CustomerPage() {
 
 	return (
 		<>
-			<div className="flex justify-center items-center h-full">
+			<div className="flex justify-center items-center h-full mt-2">
 				<div className="flex justify-center flex-col gap-2 w-[84rem]">
 					{isLoading ? (
 						<div className="flex justify-center items-center min-h-screen">

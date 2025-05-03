@@ -6,12 +6,14 @@ import {
 	NavbarContent,
 	NavbarItem,
 } from "@heroui/react";
-import { Soup } from "lucide-react";
+import { CircleUser, Soup, User } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import { ProfilePopUp } from "./PopUp";
 
 export default function NavigationBar({ navigate }) {
 	const location = useLocation();
 	const path = location.pathname;
+	const token = localStorage.getItem("token");
 	return (
 		<Navbar
 			maxWidth="full"
@@ -44,7 +46,6 @@ export default function NavigationBar({ navigate }) {
 				<NavbarItem isActive={path === "/menu"}>
 					<Link
 						color={`${path === "/menu" ? "primary" : "foreground"}`}
-						color="foreground"
 						onClick={() => navigate("/menu")}
 						className="hover:cursor-pointer"
 					>
@@ -73,7 +74,6 @@ export default function NavigationBar({ navigate }) {
 				<NavbarItem isActive={path === "/transactions"}>
 					<Link
 						color={`${path === "/transactions" ? "primary" : "foreground"}`}
-						color="foreground"
 						onClick={() => navigate("/transactions")}
 						className="hover:cursor-pointer"
 					>
@@ -83,13 +83,17 @@ export default function NavigationBar({ navigate }) {
 			</NavbarContent>
 			<NavbarContent justify="end">
 				<NavbarItem>
-					<Button
-						color="primary"
-						variant="flat"
-						onClick={() => navigate("/login")}
-					>
-						Login
-					</Button>
+					{token ? (
+						<ProfilePopUp />
+					) : (
+						<Button
+							color="primary"
+							variant="flat"
+							onClick={() => navigate("/login")}
+						>
+							Login
+						</Button>
+					)}
 				</NavbarItem>
 			</NavbarContent>
 		</Navbar>

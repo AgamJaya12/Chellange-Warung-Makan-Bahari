@@ -5,12 +5,13 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@heroui/react";
-import { Plus } from "lucide-react";
+import { Plus, User } from "lucide-react";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/src/zod.js";
 import { AxiosInstance } from "../lib/axios";
 import { useApiErrorHandler } from "../hooks/useApiHandler";
+import { useNavigate } from "react-router-dom";
 
 const addCustomerSchema = z.object({
 	name: z
@@ -125,6 +126,39 @@ export function AddCustomerPopUP({ fetchCustomers }) {
 						Simpan
 					</Button>
 				</form>
+			</PopoverContent>
+		</Popover>
+	);
+}
+
+export function ProfilePopUp() {
+	const navigate = useNavigate();
+	return (
+		<Popover>
+			<PopoverTrigger>
+				<Button
+					color="primary"
+					radius="full"
+					size="icon"
+					variant="flat"
+					className="rounded-full max-w-none w-10 h-10"
+				>
+					<User className="w-5 h-5" />
+				</Button>
+			</PopoverTrigger>
+			<PopoverContent className="w-[10rem] h-[5rem]">
+				<p>You are logged in!</p>
+				<Button
+					color="danger"
+					size="sm"
+					className="mt-2"
+					onClick={() => {
+						localStorage.removeItem("token");
+						navigate("/login");
+					}}
+				>
+					Logout
+				</Button>
 			</PopoverContent>
 		</Popover>
 	);
