@@ -34,7 +34,10 @@ export default function NavigationBar({ navigate }) {
 				],
 			}}
 		>
-			<NavbarBrand className="flex items-start">
+			<NavbarBrand
+				className="flex hover:cursor-pointer items-start"
+				onClick={() => navigate("/")}
+			>
 				<div className="flex flex-row gap-2">
 					<Soup />
 					<p className="text-inherit font-bold">
