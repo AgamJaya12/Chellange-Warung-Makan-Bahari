@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod/src/zod.js";
 import { AxiosInstance } from "../lib/axios";
 import { useApiErrorHandler } from "../hooks/useApiHandler";
 import { useNavigate } from "react-router-dom";
+import { number } from "framer-motion";
 
 const addCustomerSchema = z.object({
 	name: z
@@ -188,18 +189,31 @@ export function UpdateTableStatusPopUp({ fetchTables }) {
 
 	async function submitHandler(data) {
 		try {
-			await AxiosInstance.put(`/tables/${data.number}`, { status: data.status });
+			const response = await AxiosInstance.put(`/tables/${data.number}`, {
+				status: data.status 
+			});
+			console.log("Response:", response);
 			addToast({
 				color: "success",
 				title: "Status Meja Berhasil Diubah!",
 				description: `Status meja ${data.number} berhasil diubah menjadi ${data.status}`,
-			})
-			console.log("Table status updated successfully", data);
-
-			fetchTables();
+			});
+	
+			await fetchTables(); 
 			form.reset();
 		} catch (error) {
-			console.error("Failed to update table status", error);
+			// Enhanced error logging
+			console.error("Error Details:", {
+				message: error.message,
+				response: error.response?.data,
+				status: error.response?.status
+			});
+			
+			addToast({
+				color: "danger",
+				title: "Gagal Mengubah Status Meja!",
+				description: `Gagal mengubah status meja ${data.number}. Silakan coba lagi.`,
+			});
 		}
 	}
 

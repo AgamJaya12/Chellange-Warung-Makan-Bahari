@@ -16,14 +16,16 @@ const TablePage = () => {
     const fetchTables = async () => {
         setIsLoading(true);
         try {
+            
             const res = await AxiosInstance.get("/tables");
+            
             setTables(res.data);
         } catch (error) {
             console.error("Failed to fetch tables", error);
-            adnpdToast({
+            addToast({
                 title: "Error",
                 description: "Failed to fetch tables.",
-                type: "error", // Tipe notifikasi (error, success, info, dll.)
+                color: "danger",
             });
         } finally {
             setIsLoading(false);
@@ -39,7 +41,7 @@ const TablePage = () => {
             addToast({
                 title: "Error",
                 description: "Nomor meja tidak boleh kosong.",
-                type: "error", // Tipe notifikasi (error, success, info, dll.)
+                color: "danger",
             });
             return;
         }
@@ -50,7 +52,7 @@ const TablePage = () => {
             addToast({
                 title: "Error",
                 description: "Nomor meja sudah ada. Silakan masukkan nomor lain.",
-                type: "error",
+                color: "danger",
             })
             return;
         }
@@ -65,19 +67,20 @@ const TablePage = () => {
             addToast({
                 title: "Success",
                 description: "Meja berhasil ditambahkan.",
-                type: "success",
+                color: "success",
             });
         } catch (error) {
             console.error("Failed to add table", error);
             addToast({
                 title: "Error",
                 description: "Gagal menambahkan meja. Silakan coba lagi.",
-                type: "error",
+               color: "danger",
             });
         }
     };
 
     useEffect(() => {
+
         fetchTables();
     }, []);
 
