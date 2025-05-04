@@ -7,16 +7,13 @@ import HomePage from "../Pages/HomePage";
 
 function WmbRoutes() {
 	return (
-		<BrowserRouter>
-			<Routes>
+		<Routes>
 			<Route path="/" element={<HomePage />} />
 			<Route path="/login" element={<LoginPage />} />
 			<Route path="/register" element={<RegisterPage />} />
 			<Route path="/customer" element={<CustomerPage />} />
 			<Route path="*" element={<h1>404 Not Found</h1>} />
-
 		</Routes>
-		</BrowserRouter>
 	);
 }
 export default WmbRoutes;
