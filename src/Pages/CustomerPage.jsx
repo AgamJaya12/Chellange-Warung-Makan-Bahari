@@ -36,11 +36,6 @@ function CustomerPage() {
 	};
 
 	useEffect(() => {
-		// Mock token storage
-		localStorage.setItem(
-			"token",
-			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc0NjI4MzMyOSwiZXhwIjoxNzQ2Mjg2OTI5fQ.328_v2ydarpGhFZhI318wM46khMvvHbH8jPp1_tAy7k",
-		);
 		fetchCustomers();
 	}, []);
 
