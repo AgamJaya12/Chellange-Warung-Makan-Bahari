@@ -4,6 +4,7 @@ import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
+	addToast
 } from "@heroui/react";
 import { Plus, User } from "lucide-react";
 import { z } from "zod";
@@ -159,6 +160,109 @@ export function ProfilePopUp() {
 				>
 					Logout
 				</Button>
+			</PopoverContent>
+		</Popover>
+	);
+}
+
+export function UpdateTableStatusPopUp({ fetchTables }) {
+	useApiErrorHandler();
+
+	const form = useForm({
+		defaultValues: {
+			number: "",
+			status: "",
+		},
+		resolver: zodResolver(
+			z.object({
+				number: z
+					.string()
+					.regex(/^\d+$/, "Nomor meja harus berupa angka")
+					.min(1, "Nomor meja harus diisi"),
+				status: z.enum(["available", "occupied"], {
+					errorMap: () => ({ message: "Status harus valid" }),
+				}),
+			})
+		),
+	});
+
+	async function submitHandler(data) {
+		try {
+			await AxiosInstance.put(`/tables/${data.number}`, { status: data.status });
+			addToast({
+				color: "success",
+				title: "Status Meja Berhasil Diubah!",
+				description: `Status meja ${data.number} berhasil diubah menjadi ${data.status}`,
+			})
+			console.log("Table status updated successfully", data);
+
+			fetchTables();
+			form.reset();
+		} catch (error) {
+			console.error("Failed to update table status", error);
+		}
+	}
+
+	return (
+		<Popover showArrow offset={10} placement="bottom">
+			<PopoverTrigger>
+				<Button>
+					<Plus /> Ubah Status Meja
+				</Button>
+			</PopoverTrigger>
+			<PopoverContent className="w-[17rem] h-[12rem]">
+				<form onSubmit={form.handleSubmit(submitHandler)}>
+					<div className="flex flex-col gap-2">
+						<Controller
+							name="number"
+							control={form.control}
+							render={({ field, fieldState }) => (
+								<div>
+									<Input
+										{...field}
+										size="sm"
+										label="nomor Meja"
+										className="w-[15rem]"
+									/>
+									{fieldState.error && (
+										<p className="text-red-500">
+											{fieldState.error.message}
+										</p>
+									)}
+								</div>
+							)}
+						/>
+						<Controller
+							name="status"
+							control={form.control}
+							render={({ field, fieldState }) => (
+								<div>
+									<select
+										{...field}
+										className="w-[15rem] p-2 border rounded"
+									>
+										<option value="">Pilih Status</option>
+										<option value="available">Available</option>
+										<option value="occupied">Occupied</option>
+									</select>
+									{fieldState.error && (
+										<p className="text-red-500">
+											{fieldState.error.message}
+										</p>
+									)}
+								</div>
+							)}
+						/>
+					</div>
+					<Button
+						type="submit"
+						color="primary"
+						size="sm"
+						className="mt-4 w-full"
+					>
+						Simpan
+					</Button>
+				</form>
 			</PopoverContent>
 		</Popover>
 	);
