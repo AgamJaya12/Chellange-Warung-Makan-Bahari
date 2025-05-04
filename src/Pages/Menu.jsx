@@ -10,6 +10,7 @@ import {
 import { Icon } from "@iconify/react";
 import { AxiosInstance } from "../lib/axios";
 import MenuForm from "../components/MenuForm";
+import { Soup } from 'lucide-react';
 
 const Menu = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -124,7 +125,7 @@ const Menu = () => {
           <Card key={menu.id} className="overflow-hidden">
             <div className="flex flex-col sm:flex-row">
               <div className="relative w-full sm:w-64 h-48 bg-gray-200 flex items-center justify-center">
-                <span className="text-gray-500">Gambar</span>
+              <Soup size={48} strokeWidth={1.25} />
                 <div className="absolute bottom-0 left-0 bg-black/60 text-white px-3 py-1 text-sm">
                   {menu.category || "Tidak ada kategori"}
                 </div>
@@ -138,7 +139,7 @@ const Menu = () => {
                         ({menu.category})
                       </span>
                     </h3>
-                    <p className="text-primary-600 font-bold">Rp {menu.price}</p>
+                    <p className="text-primary-600 font-bold">Rp {Number(menu.price).toLocaleString("id-ID")}</p>
                   </div>
                   <p className="text-default-500 mt-1">Stok: {menu.stock}</p>
                 </div>
