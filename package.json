@@ -17,6 +17,7 @@
 		"@heroui/table": "^2.2.18",
 		"@heroui/theme": "^2.4.15",
 		"@hookform/resolvers": "^5.0.1",
+		"@iconify/react": "^6.0.0",
 		"axios": "^1.9.0",
 		"framer-motion": "^12.9.4",
 		"lucide-react": "^0.507.0",
