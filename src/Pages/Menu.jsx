@@ -10,7 +10,7 @@ import {
 import { Icon } from "@iconify/react";
 import { AxiosInstance } from "../lib/axios";
 import MenuForm from "../components/MenuForm";
-import Order from "../components/PopUp";
+import { Order } from "../components/PopUp";
 
 const Menu = () => {
 	const [isFormOpen, setIsFormOpen] = useState(false);

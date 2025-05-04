@@ -1,9 +1,15 @@
 import {
 	Button,
+	Dropdown,
+	DropdownItem,
+	DropdownMenu,
+	DropdownTrigger,
 	Input,
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
+	Select,
+	SelectItem,
 	addToast,
 } from "@heroui/react";
 import { Plus, User } from "lucide-react";
@@ -387,3 +393,135 @@ export const Order = ({ menu, onClose, onOrder }) => {
 		</div>
 	);
 };
+
+export function AddTransactionPopup({
+	customer,
+	menu,
+	tables,
+	fetchTransactions,
+}) {
+	const [selectedCustomer, setSelectedCustomer] = useState(null);
+	const [selectedMenu, setSelectedMenu] = useState([]);
+	const [selectedTable, setSelectedTable] = useState(null);
+	const [isDineIn, setIsDineIn] = useState();
+
+	async function handleSubmit() {
+		if (
+			!selectedCustomer ||
+			selectedMenu.length === 0 ||
+			(isDineIn && !selectedTable)
+		) {
+			addToast({
+				title: "Data tidak lengkap",
+				color: "danger",
+				description: "Mohon lengkapi semua data",
+			});
+			return;
+		}
+
+		const order = {
+			customerId: Number(selectedCustomer),
+			items: selectedMenu.map((item) => Number(item)),
+			isDineIn: isDineIn,
+			tableNumber: isDineIn ? Number(selectedTable) : 1,
+		};
+
+		try {
+			console.log(order);
+			const response = await AxiosInstance.post("/transaction", order);
+			console.log(response.data);
+			addToast({
+				title: "Transaksi berhasil ditambahkan",
+				color: "success",
+			});
+			fetchTransactions();
+		} catch (error) {
+			console.error(error);
+			addToast({
+				title: "Gagal menambahkan transaksi",
+				color: "danger",
+				description: error.message,
+			});
+		}
+	}
+
+	return (
+		<Popover showArrow offset={10} placement="bottom">
+			<PopoverTrigger>
+				<Button color="primary">
+					<Plus className="mr-2" /> Tambah Transaksi
+				</Button>
+			</PopoverTrigger>
+
+			<PopoverContent className="w-[30rem] space-y-4">
+				<Select
+					className="mt-2"
+					label="Pilih Customer"
+					selectedKeys={selectedCustomer ? [selectedCustomer] : []}
+					onSelectionChange={(keys) =>
+						setSelectedCustomer(keys.currentKey)
+					}
+				>
+					{customer?.map((c) => (
+						<SelectItem key={c.id}>{c.name}</SelectItem>
+					))}
+				</Select>
+
+				<Select
+					label="Pilih Menu"
+					selectionMode="multiple"
+					selectedKeys={selectedMenu}
+					onSelectionChange={(keys) =>
+						setSelectedMenu(Array.from(keys))
+					}
+					renderValue={(items) =>
+						items.map((item) => item.textValue).join(", ")
+					}
+				>
+					{menu?.map((m) => (
+						<SelectItem key={m.id}>{m.name}</SelectItem>
+					))}
+				</Select>
+
+				{/* Dine In / Take Away */}
+				<Select
+					label="Makan dimana?"
+					selectedKeys={
+						isDineIn !== undefined ? [isDineIn.toString()] : []
+					}
+					onSelectionChange={(keys) =>
+						setIsDineIn(keys.currentKey === "true")
+					}
+				>
+					<SelectItem key="true">Makan di tempat</SelectItem>
+					<SelectItem key="false">Bawa pulang</SelectItem>
+				</Select>
+
+				{isDineIn && (
+					<Select
+						label="Pilih Meja Tersedia"
+						selectedKeys={selectedTable ? [selectedTable] : []}
+						onSelectionChange={(keys) =>
+							setSelectedTable(keys.currentKey)
+						}
+					>
+						{tables
+							?.filter((t) => t.status === "available")
+							.map((t) => (
+								<SelectItem
+									key={t.number}
+									textValue={`Meja ${t.number}`}
+								>
+									Meja {t.number}
+								</SelectItem>
+							))}
+					</Select>
+				)}
+
+				<Button color="primary" className="mb-1" onClick={handleSubmit}>
+					Tambah
+				</Button>
+			</PopoverContent>
+		</Popover>
+	);
+}

@@ -11,9 +11,10 @@ import {
 import { Plus, Search } from "lucide-react";
 import { useApiErrorHandler } from "../hooks/useApiHandler";
 import { useEffect, useState } from "react";
-// import { useAllApi } from "../hooks/useAllApi";
+import { useAllApi } from "../hooks/useAllApi";
 
 import { AxiosInstance } from "../lib/axios";
+import { AddTransactionPopup } from "../components/PopUp";
 
 function TransactionPage() {
 	useApiErrorHandler();
@@ -23,12 +24,13 @@ function TransactionPage() {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [localTransaction, setLocalTransaction] = useState([]);
 
-	// const { customer, menu, tables, loading, error } = useAllApi();
+	const { customer, menu, tables } = useAllApi();
 
 	async function fetchTransaction() {
 		try {
 			setIsLoading(true);
 			const response = await AxiosInstance.get("/transactions");
+			console.log(response.data);
 			setLocalTransaction(response.data);
 		} catch (error) {
 			console.error(error);
@@ -41,9 +43,12 @@ function TransactionPage() {
 		fetchTransaction();
 	}, []);
 
-	const filteredCustomer = localTransaction.filter((transaction) =>
-		transaction.customer.toLowerCase().includes(searchTerm.toLowerCase()),
+	const filteredTransaction = localTransaction.filter((transaction) =>
+		(transaction.customer ?? "")
+			.toLowerCase()
+			.includes(searchTerm.toLowerCase()),
 	);
+	const visibleTransaction = filteredTransaction.slice(0, visibleCount);
 	const hasMore = visibleCount < localTransaction.length;
 
 	return (
@@ -62,9 +67,12 @@ function TransactionPage() {
 							onChange={(e) => setSearchTerm(e.target.value)}
 						/>
 					</div>
-					<Button color="primary">
-						<Plus /> Tambah Transaksi
-					</Button>
+					<AddTransactionPopup
+						customer={customer}
+						menu={menu}
+						tables={tables}
+						fetchTransactions={fetchTransaction}
+					/>
 				</div>
 				<div>
 					<Table
@@ -98,8 +106,8 @@ function TransactionPage() {
 							<TableColumn>Nomor Meja</TableColumn>
 						</TableHeader>
 						<TableBody>
-							{filteredCustomer.map((transaction) => (
-								<TableRow key={transaction.customer}>
+							{visibleTransaction.map((transaction, index) => (
+								<TableRow key={index}>
 									<TableCell>
 										{transaction.customer}
 									</TableCell>

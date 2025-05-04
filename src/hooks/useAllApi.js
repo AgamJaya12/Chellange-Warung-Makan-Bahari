@@ -3,9 +3,9 @@ import { AxiosInstance } from "../lib/axios";
 
 export function useAllApi() {
 	const [data, setData] = useState({
-		customer: null,
-		menu: null,
-		tables: null,
+		customer: [],
+		menu: [],
+		tables: [],
 	});
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
