@@ -26,6 +26,7 @@ dist-ssr
 
 # executable
 wmb-apps-be-linux
+wmb-apps-be-win.exe
 
 # credential
 .env
