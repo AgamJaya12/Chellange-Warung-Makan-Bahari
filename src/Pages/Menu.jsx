@@ -149,7 +149,7 @@ const Menu = () => {
                   Rp {parseInt(menu.price).toLocaleString("id-ID")}
                 </p>
                 <Button 
-                color="success" 
+                color="warning" 
                 size="sm"
                 onClick={() => {
                   setSelectedMenu(menu);

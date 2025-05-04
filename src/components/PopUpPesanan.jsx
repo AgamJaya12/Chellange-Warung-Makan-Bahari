@@ -82,7 +82,7 @@ const Order = ({ menu, onClose, onOrder }) => {
 
         <div className="flex justify-end gap-2">
           <Button variant="bordered" onClick={onClose}>Batal</Button>
-          <Button color="success" onClick={handleOrder}>Tambah Pesanan</Button>
+          <Button color="warning" onClick={handleOrder}>Tambah Pesanan</Button>
         </div>
       </div>
     </div>
