@@ -11,12 +11,12 @@ export function useAllApi() {
 	const [error, setError] = useState(null);
 
 	async function fetchCustomer() {
-		const response = await AxiosInstance.get("/customer");
+		const response = await AxiosInstance.get("/customers");
 		return response.data;
 	}
 
 	async function fetchMenu() {
-		const response = await AxiosInstance.get("/menu");
+		const response = await AxiosInstance.get("/menus");
 		return response.data;
 	}
 
