@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import {
+  addToast,
   Card,
   CardHeader,
   CardBody,
@@ -46,11 +47,20 @@ const LoginPage = () => {
         username: data.username,
         password: data.password
       });
-
+      addToast({
+        color: "success",
+        title: "Login Berhasil!",
+        description: "Selamat datang kembali!",
+      })
       localStorage.setItem('token', response.data.token);
 
       navigate("/");
     } catch (error) {
+      addToast({
+        color: "error",
+        title: "Login Gagal!",
+        description: error.response?.data?.message || "Login gagal. Silakan coba lagi.",
+      })
       setError(error.response?.data?.message || "Login failed. Please try again.");
     } finally {
       setLoading(false);
