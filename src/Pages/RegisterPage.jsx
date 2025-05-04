@@ -54,16 +54,21 @@ function RegisterPage() {
 				address: data.address,
 				phone: data.phone,
 			});
+			const response = await postData;
 			addToast({
 				color: "success",
 				title: "Registrasi Berhasil!",
 				description: "Silahkan login untuk masuk ke akun anda!",
 				promise: postData,
 			});
-			const response = await postData;
 			console.log(response.data);
 			navigate("/login");
 		} catch (err) {
+			addToast({
+				color: "danger",
+				title: "Registrasi Gagal!",
+				description: err.response.data,
+			});
 			console.error(err);
 		}
 	}
@@ -242,5 +247,4 @@ function RegisterPage() {
 		</>
 	);
 }
-
 export default RegisterPage;
