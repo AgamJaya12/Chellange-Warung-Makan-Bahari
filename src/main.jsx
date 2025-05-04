@@ -4,14 +4,14 @@ import "./index.css";
 import App from "./App.jsx";
 import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import { BrowserRouter } from "react-router-dom";
+import Providers from "./providers/Provider.jsx";
 
 createRoot(document.getElementById("root")).render(
 	<StrictMode>
 		<BrowserRouter>
-			<HeroUIProvider>
-				<ToastProvider placement="top-center" />
+			<Providers>
 				<App />
-			</HeroUIProvider>
+			</Providers>
 		</BrowserRouter>
 	</StrictMode>,
 );

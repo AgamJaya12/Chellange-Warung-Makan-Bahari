@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { AxiosInstance } from "../lib/axios";
 import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
-import { Button, Divider, Form, Input } from "@heroui/react";
+import { addToast, Button, Divider, Form, Input } from "@heroui/react";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
+import { Result } from "postcss";
 
 const registerSchema = z.object({
 	name: z
@@ -46,15 +47,28 @@ function RegisterPage() {
 	async function submitHandler(data) {
 		try {
 			console.log("Submitting...", data);
-			const response = await AxiosInstance.post("/register", {
+			const postData = AxiosInstance.post("/register", {
 				username: data.username,
 				password: data.password,
 				name: data.name,
 				address: data.address,
 				phone: data.phone,
 			});
+			const response = await postData;
+			addToast({
+				color: "success",
+				title: "Registrasi Berhasil!",
+				description: "Silahkan login untuk masuk ke akun anda!",
+				promise: postData,
+			});
 			console.log(response.data);
+			navigate("/login");
 		} catch (err) {
+			addToast({
+				color: "danger",
+				title: "Registrasi Gagal!",
+				description: err.response.data,
+			});
 			console.error(err);
 		}
 	}
@@ -233,5 +247,4 @@ function RegisterPage() {
 		</>
 	);
 }
-
 export default RegisterPage;
