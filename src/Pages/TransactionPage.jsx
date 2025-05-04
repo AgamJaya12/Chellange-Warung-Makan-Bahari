@@ -10,14 +10,10 @@ import {
 } from "@heroui/react";
 import { Plus, Search } from "lucide-react";
 import { useApiErrorHandler } from "../hooks/useApiHandler";
-<<<<<<< HEAD
-import { useState } from "react";
-=======
 import { useEffect, useState } from "react";
-import { useAllApi } from "../hooks/useAllApi";
+// import { useAllApi } from "../hooks/useAllApi";
 
 import { AxiosInstance } from "../lib/axios";
->>>>>>> e44cb85 (Feat: Transaction UI)
 
 function TransactionPage() {
 	useApiErrorHandler();
@@ -48,12 +44,8 @@ function TransactionPage() {
 	const filteredCustomer = localTransaction.filter((transaction) =>
 		transaction.customer.toLowerCase().includes(searchTerm.toLowerCase()),
 	);
-<<<<<<< HEAD
-	const hasMore = visibleCount < localCustomer.length;
-=======
 	const hasMore = visibleCount < localTransaction.length;
 
->>>>>>> e44cb85 (Feat: Transaction UI)
 	return (
 		<>
 			<div>
@@ -97,9 +89,6 @@ function TransactionPage() {
 							base: "max-h-[37rem] overflow-scroll",
 							table: "min-h-[7rem]",
 						}}
-<<<<<<< HEAD
-					></Table>
-=======
 					>
 						<TableHeader>
 							<TableColumn>Nama Pelanggan</TableColumn>
@@ -137,7 +126,6 @@ function TransactionPage() {
 							))}
 						</TableBody>
 					</Table>
->>>>>>> e44cb85 (Feat: Transaction UI)
 				</div>
 			</div>
 		</>
