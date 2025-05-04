@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AxiosInstance } from "../lib/axios";
 import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
 import { Button, Divider, Form, Input } from "@heroui/react";
@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
 
 const registerSchema = z.object({
 	name: z
@@ -29,6 +30,7 @@ const registerSchema = z.object({
 
 function RegisterPage() {
 	const navigate = useNavigate();
+	const [isHidden, setIsHidden] = useState(true);
 
 	const form = useForm({
 		defaultValues: {
@@ -165,6 +167,30 @@ function RegisterPage() {
 													{...field}
 													label="Password"
 													placeholder="Buat password baru"
+													type={
+														isHidden
+															? "password"
+															: "text"
+													}
+													endContent={
+														isHidden ? (
+															<EyeOff
+																onClick={() =>
+																	setIsHidden(
+																		!isHidden,
+																	)
+																}
+															/>
+														) : (
+															<Eye
+																onClick={() =>
+																	setIsHidden(
+																		!isHidden,
+																	)
+																}
+															/>
+														)
+													}
 												/>
 												{fieldState.error && (
 													<p className="text-red-500 text-sm">
