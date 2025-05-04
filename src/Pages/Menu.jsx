@@ -10,7 +10,7 @@ import {
 import { Icon } from "@iconify/react";
 import { AxiosInstance } from "../lib/axios";
 import MenuForm from "../components/MenuForm";
-import { Soup } from 'lucide-react';
+import Order from "../components/PopUpPesanan";
 
 const Menu = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -20,6 +20,9 @@ const Menu = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const [isOrderOpen, setIsOrderOpen] = useState(false);
+  const [selectedMenu, setSelectedMenu] = useState(null);
 
   const loadMenus = async () => {
     setIsLoading(true);
@@ -120,40 +123,59 @@ const Menu = () => {
       {isLoading && <p className="text-center text-gray-500">Memuat data...</p>}
       {error && <p className="text-center text-red-500">{error}</p>}
 
-      <div className="space-y-4">
+      <div className="space-y-4 mt-4">
         {filteredMenus.map((menu) => (
-          <Card key={menu.id} className="overflow-hidden">
-            <div className="flex flex-col sm:flex-row">
-              <div className="relative w-full sm:w-64 h-48 bg-gray-200 flex items-center justify-center">
-              <Soup size={48} strokeWidth={1.25} />
-                <div className="absolute bottom-0 left-0 bg-black/60 text-white px-3 py-1 text-sm">
-                  {menu.category || "Tidak ada kategori"}
-                </div>
+            <Card key={menu.id} className="flex flex-row items-center justify-between p-4 bg-gray-50 rounded-xl shadow-sm">
+              
+              {/* Icon di kiri */}
+              <div className="text-3xl text-gray-400 mr-4">
+                <Icon icon="lucide:shopping-bag" />
               </div>
-              <CardBody className="flex flex-col justify-between">
-                <div>
-                  <div className="flex justify-between items-start">
-                    <h3 className="text-xl font-bold">
-                      {menu.name}
-                      <span className="text-sm text-gray-400 ml-2">
-                        ({menu.category})
-                      </span>
-                    </h3>
-                    <p className="text-primary-600 font-bold">Rp {Number(menu.price).toLocaleString("id-ID")}</p>
-                  </div>
-                  <p className="text-default-500 mt-1">Stok: {menu.stock}</p>
+
+              {/* Info tengah */}
+              <div className="flex flex-col flex-grow">
+                <div className="flex items-baseline gap-2">
+                  <h3 className="text-md font-semibold text-gray-800 capitalize">{menu.name}</h3>
+                  {menu.category && (
+                    <span className="text-sm text-gray-500">({menu.category})</span>
+                  )}
                 </div>
-                <div className="flex gap-2 mt-4">
-                  <Button color="success" className="ml-auto">Pesan</Button>
-                </div>
-              </CardBody>
-            </div>
-          </Card>
-        ))}
+                <p className="text-sm text-gray-600">Stok: {menu.stock}</p>
+              </div>
+
+              {/* Harga dan tombol kanan */}
+              <div className="flex flex-col items-end ml-4 gap-1 sm:flex-row sm:items-center sm:gap-4">
+                <p className="text-blue-600 font-semibold whitespace-nowrap">
+                  Rp {parseInt(menu.price).toLocaleString("id-ID")}
+                </p>
+                <Button 
+                color="success" 
+                size="sm"
+                onClick={() => {
+                  setSelectedMenu(menu);
+                  setIsOrderOpen(true)
+                }}
+                >
+                  Pesan
+                </Button>
+              </div>
+            </Card>
+          ))}
       </div>
 
       {isFormOpen && (
         <MenuForm onClose={() => setIsFormOpen(false)} onSubmit={handleAddMenu} />
+      )}
+
+      {isOrderOpen && selectedMenu && (
+        <Order
+          menu={selectedMenu}
+          onClose={() => setIsOrderOpen(false)}
+          onOrder={(orderData) => {
+            console.log("Pesanan:", orderData);
+            // Tambahkan logika simpan pesanan jika perlu
+          }}
+        />
       )}
     </div>
   );
