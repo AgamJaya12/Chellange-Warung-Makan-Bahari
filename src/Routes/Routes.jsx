@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RegisterPage from "../Pages/RegisterPage";
-import LoginPage from "../pages/LoginPage";
+import LoginPage from "../Pages/LoginPage";
 
 function WmbRoutes() {
 	return (

@@ -158,6 +158,7 @@ function RegisterPage() {
 									/>
 									<Controller
 										name="password"
+										type="password"
 										control={form.control}
 										render={({ field, fieldState }) => (
 											<div>
