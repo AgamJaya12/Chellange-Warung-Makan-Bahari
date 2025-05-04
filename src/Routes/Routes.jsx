@@ -11,6 +11,7 @@ function WmbRoutes() {
 		<Routes>
 			<Route path="/" element={<HomePage />} />
 			<Route path="/login" element={<LoginPage />} />
+			<Route path="/menu" element={<Menu />} />
 			<Route path="/register" element={<RegisterPage />} />
 			<Route path="/customer" element={<CustomerPage />} />
 			<Route path="/menu" element={<Menu />} />
