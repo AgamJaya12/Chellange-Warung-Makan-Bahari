@@ -295,7 +295,6 @@ export function UpdateTableStatusPopUp({ fetchTables }) {
 
 export const Order = ({ menu, onClose, onOrder }) => {
 	const [quantity, setQuantity] = useState(1);
-	const [note, setNote] = useState("");
   
 	const [selectedCustomer, setSelectedCustomer] = useState(null);
 	const [selectedTable, setSelectedTable] = useState(null);
