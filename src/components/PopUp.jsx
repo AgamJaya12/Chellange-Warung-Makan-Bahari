@@ -294,139 +294,146 @@ export function UpdateTableStatusPopUp({ fetchTables }) {
 }
 
 export const Order = ({ menu, onClose, onOrder }) => {
-  const [quantity, setQuantity] = useState(1);
-  const [note, setNote] = useState("");
-
-  const [customers, setCustomers] = useState([]);
-  const [selectedCustomerId, setSelectedCustomerId] = useState("");
-
-  const [tables, setTables] = useState([]);
-  const [selectedTables, setSelectedTables] = useState("");
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const total = quantity * menu.price;
-
-  const handleOrder = async () => {
-	const orderData = {
-	  menuId: menu.id,
-	  name: menu.name,
-	  price: menu.price,
-	  quantity,
-	  note,
-	  total,
-	  customerId: selectedCustomerId,
-	  tableId: selectedTables,
-	};
-
-	try {
-	  const response = await AxiosInstance.post("/transaction", orderData);
-	  if (response.status === 200) {
-		onOrder(orderData);
-		onClose();
-	  }
-	} catch (err) {
-	  console.error("Gagal mengirim data pesanan:", err);
-	}
-  };
+	const [quantity, setQuantity] = useState(1);
+	const [note, setNote] = useState("");
   
-
-  return (
-	<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-	  <div className="bg-white rounded-xl w-full max-w-md p-6 shadow-lg relative">
-		<button
-		  className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
-		  onClick={onClose}
-		>
-		  <Icon icon="lucide:x" className="text-xl" />
-		</button>
-
-		<h2 className="text-xl font-semibold mb-4">Tambah Pesanan</h2>
-
-		<div className="flex items-center justify-between mb-4">
-		  <div>
-			<h3 className="text-lg font-bold capitalize">{menu.name}</h3>
-			<p className="text-gray-600">
-			  Rp {parseInt(menu.price).toLocaleString("id-ID")}
-			</p>
-		  </div>
-		  <Icon icon="lucide:shopping-bag" className="text-3xl text-gray-400" />
-		</div>
-
-		<div className="mb-4">
-		  <label className="text-sm font-medium text-gray-600">Pilih Pelanggan</label>
-		  <Select
-			className="mt-1"
-			selectedKeys={[selectedCustomerId]}
-			onSelectionChange={(keys) => {
-			  const [id] = Array.from(keys);
-			  setSelectedCustomerId(id);
-			}}
-			placeholder="Pilih pelanggan..."
+	const [selectedCustomer, setSelectedCustomer] = useState(null);
+	const [selectedTable, setSelectedTable] = useState(null);
+  
+	const [customers, setCustomers] = useState([]);
+	const [tables, setTables] = useState([]);
+  
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState("");
+  
+	const total = quantity * menu.price;
+  
+  
+	const handleOrder = async () => {
+	  if (!selectedCustomer || !selectedTable) {
+		alert("Pilih pelanggan dan meja terlebih dahulu");
+		return;
+	  }
+  
+	  const orderData = {
+		customerId: Number(selectedCustomer),
+		items: [
+		  {
+			menuId: menu.id,
+			quantity,
+			note,
+		  },
+		],
+		isDineIn: true,
+		tableNumber: Number(selectedTable),
+	  };
+  
+	  try {
+		const response = await AxiosInstance.post("/transaction", orderData);
+		if (response.status === 200) {
+		  onOrder && onOrder(orderData);
+		  onClose();
+		}
+	  } catch (err) {
+		console.error("Gagal mengirim data pesanan:", err);
+		alert("Gagal mengirim data pesanan");
+	  }
+	};
+  
+	return (
+	  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+		<div className="bg-white rounded-xl w-full max-w-md p-6 shadow-lg relative">
+		  <button
+			className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+			onClick={onClose}
 		  >
-			{customers.map((customer) => (
-			  <SelectItem key={customer.id} value={customer.id}>
-				{customer.name}
-			  </SelectItem>
-			))}
-		  </Select>
-		</div>
-
-		<div className="mb-4">
-		  <label className="text-sm font-medium text-gray-600">Pilih Meja</label>
-		  <Select
-			className="mt-1"
-			selectedKeys={[selectedTables]}
-			onSelectionChange={(k) => {
-			  const [id] = Array.from(k);
-			  setSelectedTables(id);
-			}}
-			placeholder="Pilih Meja..."
-		  >
-			{tables.map((table) => (
-			  <SelectItem key={table.id} value={table.number}>
-			  {table.number}
-			</SelectItem>
-			))}
-		  </Select>
-		</div>
-
-
-		<div className="mb-4">
-		  <label className="text-sm font-medium text-gray-600">Jumlah</label>
-		  <div className="flex items-center gap-2 mt-1">
-			<Button
-			  size="sm"
-			  variant="bordered"
-			  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-			>
-			  -
-			</Button>
-			<span className="w-6 text-center">{quantity}</span>
-			<Button
-			  size="sm"
-			  variant="bordered"
-			  onClick={() => setQuantity(quantity + 1)}
-			>
-			  +
-			</Button>
+			<Icon icon="lucide:x" className="text-xl" />
+		  </button>
+  
+		  <h2 className="text-xl font-semibold mb-4">Tambah Pesanan</h2>
+  
+		  <div className="flex items-center justify-between mb-4">
+			<div>
+			  <h3 className="text-lg font-bold capitalize">{menu.name}</h3>
+			  <p className="text-gray-600">
+				Rp {parseInt(menu.price).toLocaleString("id-ID")}
+			  </p>
+			</div>
+			<Icon icon="lucide:shopping-bag" className="text-3xl text-gray-400" />
 		  </div>
-		</div>
-
-		<div className="flex justify-between items-center font-semibold text-lg mb-4">
-		  <span>Total</span>
-		  <span>Rp {total.toLocaleString("id-ID")}</span>
-		</div>
-
-		<div className="flex justify-end gap-2">
-		  <Button variant="bordered" onClick={onClose}>Batal</Button>
-		  <Button color="warning" onClick={handleOrder}>Tambah Pesanan</Button>
+  
+		  <div className="mb-4">
+			<label className="text-sm font-medium text-gray-600">Pilih Pelanggan</label>
+			<Select
+			  className="mt-1"
+			  selectedKeys={selectedCustomer ? [selectedCustomer] : []}
+			  onSelectionChange={(keys) => {
+				const [id] = Array.from(keys);
+				setSelectedCustomer(id);
+			  }}
+			  placeholder="Pilih pelanggan..."
+			>
+			  {customers.map((customer) => (
+				<SelectItem key={customer.id} value={customer.id}>
+				  {customer.name}
+				</SelectItem>
+			  ))}
+			</Select>
+		  </div>
+  
+		  <div className="mb-4">
+			<label className="text-sm font-medium text-gray-600">Pilih Meja</label>
+			<Select
+			  className="mt-1"
+			  selectedKeys={selectedTable ? [selectedTable] : []}
+			  onSelectionChange={(k) => {
+				const [id] = Array.from(k);
+				setSelectedTable(id);
+			  }}
+			  placeholder="Pilih Meja..."
+			>
+			  {tables.map((table) => (
+				<SelectItem key={table.number} value={table.number}>
+				  Meja {table.number}
+				</SelectItem>
+			  ))}
+			</Select>
+		  </div>
+  
+		  <div className="mb-4">
+			<label className="text-sm font-medium text-gray-600">Jumlah</label>
+			<div className="flex items-center gap-2 mt-1">
+			  <Button
+				size="sm"
+				variant="bordered"
+				onClick={() => setQuantity(Math.max(1, quantity - 1))}
+			  >
+				-
+			  </Button>
+			  <span className="w-6 text-center">{quantity}</span>
+			  <Button
+				size="sm"
+				variant="bordered"
+				onClick={() => setQuantity(quantity + 1)}
+			  >
+				+
+			  </Button>
+			</div>
+		  </div>
+  
+		  <div className="flex justify-between items-center font-semibold text-lg mb-4">
+			<span>Total</span>
+			<span>Rp {total.toLocaleString("id-ID")}</span>
+		  </div>
+  
+		  <div className="flex justify-end gap-2">
+			<Button variant="bordered" onClick={onClose}>Batal</Button>
+			<Button color="warning" onClick={handleOrder}>Tambah Pesanan</Button>
+		  </div>
 		</div>
 	  </div>
-	</div>
-  );
-};
+	);
+  };
 
 export function AddTransactionPopup({
 	customer,
