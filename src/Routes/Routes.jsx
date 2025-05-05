@@ -16,9 +16,7 @@ function WmbRoutes() {
 			<Route
 				path="/"
 				element={
-					<ProtectedRoute>
 						<HomePage />
-					</ProtectedRoute>
 				}
 			/>
 			<Route
