@@ -364,17 +364,6 @@ export const Order = ({ menu, onClose, onOrder }) => {
 					</div>
 				</div>
 
-				<div className="mb-4">
-					<label className="text-sm font-medium text-gray-600">
-						Catatan (Opsional)
-					</label>
-					<textarea
-						className="w-full mt-1 p-2 border rounded-md text-sm"
-						placeholder="Mis: Tidak pedas, tanpa sayur, dll"
-						value={note}
-						onChange={(e) => setNote(e.target.value)}
-					/>
-				</div>
 
 				<div className="flex justify-between items-center font-semibold text-lg mb-4">
 					<span>Total</span>
