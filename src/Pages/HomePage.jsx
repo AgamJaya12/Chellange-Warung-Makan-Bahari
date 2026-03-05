@@ -57,10 +57,8 @@ function HomePage() {
 				</motion.div>
 				<div className="flex w-full justify-center flex-row gap-14">
 					<About nama="Rizqi" link="https://github.com/Ryuuusuke" />
-					<About
-						nama="Nurdin"
-						link="https://github.com/Julfaninurdinnst"
-					/>
+					<About nama="Nurdin" link="https://github.com/Julfaninurdinnst"/>
+					<About nama="Agam" link="https://github.com/AgamJaya12"/>
 				</div>
 			</section>
 		</div>

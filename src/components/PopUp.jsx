@@ -302,11 +302,7 @@ export const Order = ({ menu, onClose, onOrder }) => {
 	const [customers, setCustomers] = useState([]);
 	const [tables, setTables] = useState([]);
   
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState("");
-  
 	const total = quantity * menu.price;
-  
   
 	const handleOrder = async () => {
 	  if (!selectedCustomer || !selectedTable) {
@@ -320,12 +316,29 @@ export const Order = ({ menu, onClose, onOrder }) => {
 		  {
 			menuId: menu.id,
 			quantity,
-			note,
 		  },
 		],
 		isDineIn: true,
 		tableNumber: Number(selectedTable),
 	  };
+
+	  // Ambil data pelanggan dan meja
+	useEffect(() => {
+		const fetchData = async () => {
+		  try {
+			const [customerRes, tableRes] = await Promise.all([
+			  AxiosInstance.get("/customers"),
+			  AxiosInstance.get("/tables"),
+			]);
+			setCustomers(customerRes.data || []);
+			setTables(tableRes.data || []);
+		  } catch (err) {
+			console.error("Gagal memuat data:", err);
+			setError("Gagal memuat data pelanggan atau meja");
+		  }
+		};
+		fetchData();
+	  }, []);
   
 	  try {
 		const response = await AxiosInstance.post("/transaction", orderData);
