@@ -11,6 +11,7 @@ import {
 	Select,
 	SelectItem,
 	addToast,
+	table,
 } from "@heroui/react";
 import { Plus, User } from "lucide-react";
 import { z } from "zod";
@@ -20,7 +21,7 @@ import { AxiosInstance } from "../lib/axios";
 import { useApiErrorHandler } from "../hooks/useApiHandler";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const addCustomerSchema = z.object({
 	name: z
@@ -304,25 +305,6 @@ export const Order = ({ menu, onClose, onOrder }) => {
   
 	const total = quantity * menu.price;
   
-	const handleOrder = async () => {
-	  if (!selectedCustomer || !selectedTable) {
-		alert("Pilih pelanggan dan meja terlebih dahulu");
-		return;
-	  }
-  
-	  const orderData = {
-		customerId: Number(selectedCustomer),
-		items: [
-		  {
-			menuId: menu.id,
-			quantity,
-		  },
-		],
-		isDineIn: true,
-		tableNumber: Number(selectedTable),
-	  };
-
-	  // Ambil data pelanggan dan meja
 	useEffect(() => {
 		const fetchData = async () => {
 		  try {
@@ -330,6 +312,10 @@ export const Order = ({ menu, onClose, onOrder }) => {
 			  AxiosInstance.get("/customers"),
 			  AxiosInstance.get("/tables"),
 			]);
+
+			console.log("Customers:", customerRes.data);
+            console.log("Tables:", tableRes.data);
+
 			setCustomers(customerRes.data || []);
 			setTables(tableRes.data || []);
 		  } catch (err) {
@@ -340,17 +326,46 @@ export const Order = ({ menu, onClose, onOrder }) => {
 		fetchData();
 	  }, []);
   
-	  try {
-		const response = await AxiosInstance.post("/transaction", orderData);
-		if (response.status === 200) {
-		  onOrder && onOrder(orderData);
-		  onClose();
-		}
-	  } catch (err) {
-		console.error("Gagal mengirim data pesanan:", err);
-		alert("Gagal mengirim data pesanan");
-	  }
-	};
+	const handleOrder = async () => {
+  if (!selectedCustomer || !selectedTable) {
+    alert("Pilih pelanggan dan meja terlebih dahulu");
+    return;
+  }
+
+  const menuId = menu.id || menu.menuId;
+
+  if (!menuId) {
+    alert("Menu tidak ditemukan");
+    return;
+  }
+
+  const orderData = {
+    customerId: Number(selectedCustomer),
+
+    // disamakan dengan AddTransactionPopup
+    items: [Number(menuId)],
+
+    isDineIn: true,
+
+    tableNumber: Number(selectedTable),
+  };
+
+  try {
+    console.log("ORDER DATA:", orderData);
+
+    const response = await AxiosInstance.post("/transaction", orderData);
+
+    console.log("Response:", response.data);
+
+    if (response.data) {
+      onOrder?.(response.data);
+      onClose();
+    }
+  } catch (err) {
+    console.error("Gagal mengirim data pesanan:", err.response?.data || err);
+    alert("Gagal mengirim data pesanan");
+  }
+};
   
 	return (
 	  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -392,25 +407,29 @@ export const Order = ({ menu, onClose, onOrder }) => {
 			  ))}
 			</Select>
 		  </div>
-  
+
 		  <div className="mb-4">
 			<label className="text-sm font-medium text-gray-600">Pilih Meja</label>
 			<Select
 			  className="mt-1"
 			  selectedKeys={selectedTable ? [selectedTable] : []}
-			  onSelectionChange={(k) => {
-				const [id] = Array.from(k);
+			  onSelectionChange={(keys) => {
+				const [id] = Array.from(keys);
 				setSelectedTable(id);
 			  }}
 			  placeholder="Pilih Meja..."
 			>
-			  {tables.map((table) => (
-				<SelectItem key={table.number} value={table.number}>
+			  {tables
+    ?.filter((t) => t.status === "available")
+    .map((table) => (
+				<SelectItem key={table.number} textValue={`Meja ${table.number}`}>
 				  Meja {table.number}
 				</SelectItem>
 			  ))}
 			</Select>
 		  </div>
+  
+		  
   
 		  <div className="mb-4">
 			<label className="text-sm font-medium text-gray-600">Jumlah</label>
